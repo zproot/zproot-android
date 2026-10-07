@@ -1,6 +1,6 @@
 # zproot-android
 
-Android frontend for [zproot](github.com/zproot/zproot) — Linux on Android without root or Termux.
+Android frontend for [zproot](https://github.com/zproot/zproot) — Linux on Android without root or Termux.
 
 The ptrace tracer is written in Zig and lives at zproot/zproot. This repository contains only the Android app.
 
@@ -360,22 +360,23 @@ zproot-android/
 
 Android enforces restrictions on app processes that a ptrace tracer must work around:
 
-· W^X (Write-XOR-Execute): prevents executing files in app-writable directories. The tracer and loader live in nativeLibraryDir and are named lib*.so.
-· SELinux: blocks certain filesystem operations. The app touches nothing outside its own filesDir.
-· Zygote seccomp: blocks 18+ syscalls via BPF filter. The tracer catches SIGSYS and returns -ENOSYS so callers fall back to older syscall variants.
-· Phantom Process Killer (Android 12+): kills forked children that consume too much CPU in the background. A foreground service with a persistent notification is the only non-root mitigation.
+- W^X (Write-XOR-Execute): prevents executing files in app-writable directories. The tracer and loader live in nativeLibraryDir and are named lib*.so.
+- SELinux: blocks certain filesystem operations. The app touches nothing outside its own filesDir.
+- Zygote seccomp: blocks 18+ syscalls via BPF filter. The tracer catches SIGSYS and returns -ENOSYS so callers fall back to older syscall variants.
+- Phantom Process Killer (Android 12+): kills forked children that consume too much CPU in the background. A foreground service with a persistent notification is the only non-root mitigation.
 
-Data persistence
+## Data persistence
 
-The rootfs lives in /data/data/com.zproot/files/rootfs/. It survives app restarts, reboots, and updates. It is deleted only when the user uninstalls the app or clears its data.
+The rootfs lives in `/data/data/com.zproot/files/rootfs/`. It survives app restarts, reboots, and updates. It is deleted only when the user uninstalls the app or clears its data.
 
 Installing a distro extracts a tarball into that directory. Removing a distro is rm -rf on the subdirectory. No filesystem, no mount, no image file.
 
-Building for other ABIs
+## Building for other ABIs
 
 Currently only arm64-v8a is supported.
 
-ABI Tracer Loader Status
+| ABI | Tracer | Loader | Status |
+|-----|--------|--------|--------|
 arm64-v8a yes yes supported
 x86_64 yes partial pending M10 verification
 armeabi-v7a no no not started
@@ -383,13 +384,13 @@ x86 no no not started
 
 32-bit targets need separate register structs, syscall tables, and _start assembly. See docs/architecture.md in the tracer repository.
 
-License
+## License
 
 MIT
 
 The tracer is a clean-room reimplementation. No source code from proot, termux-proot, or proot-distro was read, copied, or translated. See docs/clean-room.md in the tracer repository.
 
-Related repositories
+## Related repositories
 
-· zproot/zproot — tracer core, written in Zig
-· zproot/.github — organization profile
+- zproot/zproot — tracer core, written in Zig
+- zproot/.github — organization profile

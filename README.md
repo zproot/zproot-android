@@ -1,3 +1,5 @@
+# !!! This README is under construction !!!
+
 # zproot-android
 
 Android frontend for [zproot](https://github.com/zproot/zproot) — Linux on Android without root or Termux.

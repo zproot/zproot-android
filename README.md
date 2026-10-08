@@ -2,7 +2,7 @@
 
 # zproot-android
 
-Android frontend for [zproot](https://github.com/zproot/zproot-android) — Linux on Android without root or Termux.
+Android frontend for [zproot](https://github.com/zproot/zproot) — Linux on Android without root or Termux.
 
 The ptrace tracer is written in Zig and lives at [zproot](https://github.com/zproot/zproot). This repository contains only the Android app.
 
@@ -34,7 +34,7 @@ Do not expect a usable Linux container yet. If you need something usable today, 
 
 The app bundles a native aarch64 binary (libzproot.so) built from zproot/zproot. That binary uses Linux `ptrace()` to intercept syscalls and translate filesystem paths, creating a virtual root filesystem without root privileges.
 
-When a guest program calls openat("/etc/passwd"), the tracer rewrites the syscall argument to point at `/data/data/com.zproot/files/rootfs/etc/passwd`. The kernel opens the real file. The guest sees `/etc/passwd`.
+When a guest program calls `openat("/etc/passwd")`, the tracer rewrites the syscall argument to point at `/data/data/com.zproot/files/rootfs/etc/passwd`. The kernel opens the real file. The guest sees `/etc/passwd`.
 
 ## Build
 

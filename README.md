@@ -2,9 +2,9 @@
 
 # zproot-android
 
-Android frontend for [zproot](https://github.com/zproot/zproot) — Linux on Android without root or Termux.
+Android frontend for [zproot](https://github.com/zproot/zproot-android) — Linux on Android without root or Termux.
 
-The ptrace tracer is written in Zig and lives at zproot/zproot. This repository contains only the Android app.
+The ptrace tracer is written in Zig and lives at [zproot](https://github.com/zproot/zproot). This repository contains only the Android app.
 
 ## What it does
 
@@ -32,9 +32,9 @@ Do not expect a usable Linux container yet. If you need something usable today, 
 
 ## How it works
 
-The app bundles a native aarch64 binary (libzproot.so) built from zproot/zproot. That binary uses Linux ptrace() to intercept syscalls and translate filesystem paths, creating a virtual root filesystem without root privileges.
+The app bundles a native aarch64 binary (libzproot.so) built from zproot/zproot. That binary uses Linux `ptrace()` to intercept syscalls and translate filesystem paths, creating a virtual root filesystem without root privileges.
 
-When a guest program calls openat("/etc/passwd"), the tracer rewrites the syscall argument to point at /data/data/com.zproot/files/rootfs/etc/passwd. The kernel opens the real file. The guest sees /etc/passwd.
+When a guest program calls openat("/etc/passwd"), the tracer rewrites the syscall argument to point at `/data/data/com.zproot/files/rootfs/etc/passwd`. The kernel opens the real file. The guest sees `/etc/passwd`.
 
 ## Build
 
@@ -45,14 +45,14 @@ The tracer binary is not committed. It is either downloaded from a release or bu
 Every push to this repository triggers a workflow that:
 
 1. Clones zproot/zproot
-2. Builds libzproot.so for aarch64-linux-android
-3. Copies it into app/src/main/jniLibs/arm64-v8a/
+2. Builds `libzproot.so` for aarch64-linux-android
+3. Copies it into `app/src/main/jniLibs/<abi>/`
 4. Runs ./gradlew assembleRelease
 5. Uploads the APK as an artifact
 
 Download the APK from the Actions tab.
 
-Locally
+## Locally
 
 Prerequisites:
 
@@ -78,13 +78,13 @@ cd ../zproot-android
 ./gradlew assembleRelease
 ```
 
-The APK is at:
+### The APK is at:
 
 ```
 app/build/outputs/apk/release/app-release.apk
 ```
 
-Install with:
+### Install with:
 
 ```bash
 adb install -r app/build/outputs/apk/release/app-release.apk
@@ -362,10 +362,10 @@ zproot-android/
 
 Android enforces restrictions on app processes that a ptrace tracer must work around:
 
-- W^X (Write-XOR-Execute): prevents executing files in app-writable directories. The tracer and loader live in nativeLibraryDir and are named lib*.so.
-- SELinux: blocks certain filesystem operations. The app touches nothing outside its own filesDir.
-- Zygote seccomp: blocks 18+ syscalls via BPF filter. The tracer catches SIGSYS and returns -ENOSYS so callers fall back to older syscall variants.
-- Phantom Process Killer (Android 12+): kills forked children that consume too much CPU in the background. A foreground service with a persistent notification is the only non-root mitigation.
+- ***W^X (Write-XOR-Execute)***: prevents executing files in app-writable directories. The tracer and loader live in nativeLibraryDir and are named lib*.so.
+- ***SELinux***: blocks certain filesystem operations. The app touches nothing outside its own filesDir.
+- ***Zygote seccomp***: blocks 18+ syscalls via BPF filter. The tracer catches SIGSYS and returns -ENOSYS so callers fall back to older syscall variants.
+- ***Phantom Process Killer (Android 12+)***: kills forked children that consume too much CPU in the background. A foreground service with a persistent notification is the only non-root mitigation.
 
 ## Data persistence
 
@@ -379,10 +379,10 @@ Currently only arm64-v8a is supported.
 
 | ABI | Tracer | Loader | Status |
 |-----|--------|--------|--------|
-arm64-v8a yes yes supported
-x86_64 yes partial pending M10 verification
-armeabi-v7a no no not started
-x86 no no not started
+| arm64-v8a | yes | yes | supported |
+| x86_64 | yes | partial | pending M10 verification |
+| armeabi-v7a | no | no | not started |
+| x86 | no | no | not started |
 
 32-bit targets need separate register structs, syscall tables, and _start assembly. See docs/architecture.md in the tracer repository.
 
@@ -394,5 +394,5 @@ The tracer is a clean-room reimplementation. No source code from proot, termux-p
 
 ## Related repositories
 
-- zproot/zproot — tracer core, written in Zig
-- zproot/.github — organization profile
+- [zproot](https://github.com/zproot/zproot) — tracer core, written in Zig
+- [.github](https://github.com/zproot/.github) — organization profile

@@ -90,269 +90,43 @@ app/build/outputs/apk/release/app-release.apk
 adb install -r app/build/outputs/apk/release/app-release.apk
 ```
 
-Project structure
+## Project structure
 
 zproot-android/
-│
-├── .github/                              GitHub configuration
-│   ├── workflows/
-│   │   ├── build.yml                     APK build on push
-│   │   ├── release.yml                   Tagged release with signed APK
-│   │   └── lint.yml                      ktlint + detekt
-│   ├── actions/
-│   │   └── setup-android/                Reusable setup action
-│   ├── ISSUE_TEMPLATE/
-│   │   ├── bug_report.md
-│   │   └── feature_request.md
-│   ├── PULL_REQUEST_TEMPLATE/
-│   │   └── PULL_REQUEST_TEMPLATE.md
-│   ├── CODEOWNERS
-│   ├── FUNDING.yml
-│   ├── SECURITY.md
-│   ├── dependabot.yml
-│   ├── discussions.yml
-│   └── profile/
-│       └── README.md
-│
-├── app/                                  Android application module
-│   ├── build.gradle.kts
-│   ├── proguard-rules.pro
-│   └── src/
-│       ├── main/
-│       │   ├── AndroidManifest.xml
-│       │   ├── java/com/zproot/
-│       │   │   ├── ZActivity.kt          Compose entry point
-│       │   │   ├── RootfsManager.kt      Download, extract, symlink
-│       │   │   ├── DistroRegistry.kt     Distro list (planned)
-│       │   │   ├── TracerLauncher.kt     ProcessBuilder wrapper
-│       │   │   └── ZprootService.kt      Foreground service (planned)
-│       │   ├── res/
-│       │   │   ├── values/
-│       │   │   │   ├── strings.xml
-│       │   │   │   ├── colors.xml
-│       │   │   │   └── themes.xml
-│       │   │   ├── mipmap-anydpi-v26/
-│       │   │   │   ├── ic_launcher.xml
-│       │   │   │   └── ic_launcher_round.xml
-│       │   │   └── xml/
-│       │   │       └── backup_rules.xml
-│       │   └── jniLibs/
-│       │       └── arm64-v8a/
-│       │           ├── libzproot.so          Tracer (not committed)
-│       │           └── libzproot-loader.so   Loader (not committed)
-│       ├── test/
-│       │   └── java/com/zproot/
-│       │       └── RootfsManagerTest.kt
-│       └── androidTest/
-│           └── java/com/zproot/
-│               └── LaunchTest.kt
-│
-├── core/                                 Shared Android library module
+├── app/                       Android application module
 │   ├── build.gradle.kts
 │   └── src/main/
 │       ├── AndroidManifest.xml
-│       └── java/com/zproot/core/
-│           ├── DistroConfig.kt
-│           ├── TracerLauncher.kt
-│           └── Downloader.kt
-│
-├── feature/                              UI features (one module each)
-│   ├── home/
-│   ├── install/
-│   ├── login/
-│   ├── terminal/
-│   ├── settings/
-│   ├── distro-list/
-│   ├── distro-detail/
-│   ├── file-manager/
-│   ├── package-manager/
-│   ├── display/
-│   ├── onboarding/
-│   ├── about/
-│   ├── logs/
-│   ├── shell/
-│   └── keys/
-│
-├── native/                               Native build staging
-│   ├── aarch64/
-│   ├── x86_64/
-│   ├── arm/
-│   ├── x86/
-│   ├── asm/
-│   └── linker/
-│
-├── rootfs/                               Per-distro recipes
-│   ├── alpine/
-│   │   └── recipe.toml
-│   ├── debian/
-│   │   └── recipe.toml
-│   ├── ubuntu/
-│   │   └── recipe.toml
-│   ├── arch/
-│   │   └── recipe.toml
-│   ├── fedora/
-│   │   └── recipe.toml
-│   ├── opensuse/
-│   │   └── recipe.toml
-│   ├── manjaro/
-│   │   └── recipe.toml
-│   ├── rocky/
-│   │   └── recipe.toml
-│   ├── void/
-│   ├── gentoo/
-│   ├── recipes/
-│   └── mirrors/
-│
-├── service/                              Android services
-│   ├── foreground/
-│   ├── installer/
-│   ├── downloader/
-│   ├── extractor/
-│   ├── pty/
-│   ├── session/
-│   └── notifications/
-│
-├── compositor/                           Wayland compositor (planned)
-│   ├── wayland/
-│   ├── smithay-bindings/
-│   ├── shm/
-│   ├── egl/
-│   ├── input/
-│   ├── seat/
-│   ├── xdg-shell/
-│   ├── buffer/
-│   ├── damage/
-│   ├── output/
-│   └── tests/
-│
-├── scripts/                              Automation scripts
-│   ├── fetch-binary.sh                   Download libzproot.so from releases
-│   ├── build-android.sh                  Zig build + copy into jniLibs
-│   ├── build-musl.sh                     Termux build for local testing
-│   ├── build-apk.sh                      gradlew wrapper
-│   ├── test-on-device.sh                 adb install + run
-│   ├── release.sh                        Tag and upload
-│   ├── sign.sh                           Keystore signing
-│   ├── lint.sh                           ktlint + detekt
-│   ├── format.sh                         Spotless
-│   ├── ci.sh
-│   ├── dev.sh
-│   ├── deploy.sh
-│   ├── rootfs.sh
-│   └── native.sh
-│
-├── docs/                                 Documentation
-│   ├── architecture.md
-│   ├── adr/
-│   │   ├── 0001-use-zig-for-tracer.md
-│   │   ├── 0002-module-layout.md
-│   │   └── 0003-foreground-service.md
-│   ├── api/
-│   ├── design/
-│   ├── native/
-│   ├── android/
-│   ├── security/
-│   ├── troubleshooting/
-│   ├── roadmap.md
-│   ├── tutorials/
-│   ├── reference/
-│   ├── contributing.md
-│   └── images/
-│
-├── test/                                 Test layout
-│   ├── unit/
-│   ├── integration/
-│   ├── instrumented/
-│   ├── screenshot/
-│   ├── benchmark/
-│   ├── fuzz/
-│   ├── fixtures/
-│   └── helpers/
-│
-├── tools/                                Developer utilities
-│   ├── detekt/
-│   ├── ktlint/
-│   ├── spotless/
-│   ├── apk-analyzer/
-│   ├── binary-inspector/
-│   ├── rootfs-builder/
-│   └── trace-viewer/
-│
-├── configs/                              Editor and linter configs
-│   ├── editorconfig/
-│   ├── formatting/
-│   ├── linters/
-│   └── hooks/
-│
-├── assets/                               Runtime assets
-│   ├── fonts/
-│   ├── icons/
-│   ├── splash/
-│   ├── terminfo/
-│   ├── keyboard/
-│   ├── shell-init/
-│   └── motd/
-│
-├── third-party/                          Vendored dependencies
-│   ├── termux-terminal/
-│   ├── connectbot-termlib/
-│   ├── zig-wlroots/
-│   ├── licenses/
-│   ├── patches/
-│   └── notices/
-│
-├── translations/                         Per-locale strings
-│   ├── en/
-│   ├── it/
-│   ├── de/
-│   ├── fr/
-│   ├── es/
-│   ├── ja/
-│   └── zh/
-│
-├── distribution/                         Store and release metadata
-│   ├── f-droid/
-│   │   └── metadata/
-│   ├── github-releases/
-│   ├── play-store/
-│   ├── izzysoft/
-│   └── metadata/
-│
-├── releases/                             Release notes
-│   ├── templates/
-│   ├── changelog/
-│   └── v0.1/
-│
-├── patches/                              Dependency patches
-│   ├── upstream/
-│   ├── custom/
-│   └── archived/
-│
-├── dist/                                 Build output staging
-│   ├── apk/
-│   ├── tarballs/
-│   ├── musl/
-│   ├── android/
-│   └── checksums/
-│
-├── build-logic/                          Gradle convention plugins
-│   ├── convention/
-│   ├── plugins/
-│   ├── android/
-│   ├── kotlin/
-│   ├── compose/
-│   └── native/
-│
-├── gradle/                               Gradle wrapper and catalog
-│   ├── wrapper/
-│   │   ├── gradle-wrapper.jar
-│   │   └── gradle-wrapper.properties
-│   └── libs.versions.toml
-│
-├── .gitignore
-├── build.gradle.kts                      Root build script
-├── settings.gradle.kts                   Module includes
-├── gradle.properties                     JVM args, AndroidX flags
+│       ├── java/com/zproot/
+│       │   ├── ZActivity.kt           Compose UI
+│       │   └── RootfsManager.kt       Download, extract, symlink
+│       └── jniLibs/arm64-v8a/
+│           ├── libzproot.so           Tracer (not committed)
+│           └── libzproot-loader.so    PT_INTERP loader (not committed)
+├── core/                      Shared library module (planned)
+├── feature/                   Feature modules (planned)
+├── native/                    Native build staging
+├── rootfs/                    Per-distro recipes
+├── service/                   Foreground service (planned)
+├── compositor/                Wayland compositor (planned)
+├── scripts/                   Build and fetch scripts
+├── docs/                      Architecture and design notes
+├── test/                      Unit and instrumented tests
+├── tools/                     Developer utilities
+├── distribution/              F-Droid metadata
+├── third-party/               Vendored dependencies and licenses
+├── translations/              strings.xml per locale
+├── configs/                   Editor and linter configs
+├── assets/                    Runtime assets
+├── build-logic/               Gradle convention plugins
+├── gradle/                    Wrapper and version catalog
+├── releases/                  Release notes
+├── patches/                   Dependency patches
+├── dist/                      Build output staging
+├── .github/                   Workflows and issue templates
+├── build.gradle.kts
+├── settings.gradle.kts
+├── gradle.properties
 ├── gradlew
 ├── gradlew.bat
 ├── LICENSE

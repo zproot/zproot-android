@@ -26,7 +26,7 @@ Work in progress. The APK builds, installs, and runs the tracer on a real device
 | Multi-distro registry | not started |
 | Wayland compositor | planned |
 
-Do not expect a usable Linux container yet. If you need something usable today, use [pr](https://github.com/oonid/pr) or [Termux](https://github.com/termux/proot-distro).
+Do not expect a usable Linux container yet. If you need something usable today, use [pr](https://github.com/oonid/pr) or [Termux](https://github.com/termux/termux-app).
 
 ## How it works
 

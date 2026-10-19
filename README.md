@@ -166,6 +166,8 @@ Installing a distro extracts a tarball into that directory. Removing a distro is
 
 [MIT](https://github.com/zproot/zproot-android/blob/main/LICENSE)
 
+## Note
+
 The tracer is a clean-room reimplementation. No source code from [proot](https://github.com/proot-me/proot), [termux-proot](https://github.com/termux/proot), or [proot-distro](https://github.com/termux/proot-distro) was read, copied, or translated. See [docs/clean-room.md](https://github.com/zproot/zproot/blob/master/docs/clean-room/clean-room.md) in the tracer repository.
 
 ## Related repositories

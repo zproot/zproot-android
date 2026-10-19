@@ -30,7 +30,7 @@ Do not expect a usable Linux container yet. If you need something usable today, 
 
 ## How it works
 
-The app bundles a native aarch64 binary (`libzproot.so`) built from [zproot/zproot](https://github.com/zproot/zproot). That binary uses Linux `ptrace()` to intercept syscalls and translate filesystem paths, creating a virtual root filesystem without root privileges.
+The app bundles a native aarch64 binary (`libzproot.so`) built from [zproot](https://github.com/zproot/zproot). That binary uses Linux `ptrace()` to intercept syscalls and translate filesystem paths, creating a virtual root filesystem without root privileges.
 
 When a guest program calls `openat("/etc/passwd")`, the tracer rewrites the syscall argument to point at `/data/data/com.zproot/files/rootfs/etc/passwd`. The kernel opens the real file. The guest sees `/etc/passwd`.
 

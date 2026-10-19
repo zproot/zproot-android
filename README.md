@@ -158,7 +158,7 @@ Installing a distro extracts a tarball into that directory. Removing a distro is
 | arm64-v8a | yes | yes | supported |
 | x86_64 | yes | partial | pending M10 verification |
 | armeabi-v7a | no | no | not started |
-| x86 no | no | not | started |
+| x86 | no | no | not started |
 
 32-bit targets need separate register `structs`, `syscall` tables, and `_start` assembly. See [docs/architecture/architecture.md](https://github.com/zproot/zproot-android/blob/main/docs/architecture/architecture.md) in the tracer repository.
 

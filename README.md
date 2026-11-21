@@ -43,9 +43,9 @@ The tracer binary is not committed. It is either downloaded from a release or bu
 Every push to this repository triggers a workflow that:
 
 1. Clones `zproot/zproot`
-2. Builds `libzproot.so` for `<abi>-linux-android`
-3. Copies it into `app/src/main/jniLibs/<abi>/`
-4. Runs `./gradlew assembleRelease`
+2. Builds `zproot` and the PT_INTERP loader for `aarch64-linux-android`
+3. Packages them as `libzproot.so` and `libzproot-loader.so` in `app/src/main/jniLibs/arm64-v8a/`
+4. Runs Android unit tests and `./gradlew assembleRelease`
 5. Uploads the APK as an artifact
 
 Download the APK from the [Actions tab](https://github.com/zproot/zproot-android/actions).

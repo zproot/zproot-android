@@ -66,13 +66,13 @@ fun Screen() {
                 scope.launch {
                     output = "Installing Alpine...\n"
                     val lines = mutableListOf<String>()
-                    withContext(Dispatchers.IO) {
+                    val installed = withContext(Dispatchers.IO) {
                         RootfsManager.install(context) { line ->
                             lines.add(line)
                         }
                     }
                     output += lines.joinToString("\n")
-                    output += "\nDone."
+                    output += if (installed) "\nInstall complete." else "\nInstall failed."
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -104,11 +104,17 @@ fun Screen() {
 fun runSh(context: Context): String {
     return try {
         val bin = File(context.applicationInfo.nativeLibraryDir, "libzproot.so")
+        val loader = File(context.applicationInfo.nativeLibraryDir, "libzproot-loader.so")
         val rootfs = RootfsManager.rootfsDir(context).absolutePath
+
+        if (!bin.canExecute()) return "error: tracer binary is missing or not executable: $bin"
+        if (!loader.canExecute()) return "error: PT_INTERP loader is missing or not executable: $loader"
+        if (!RootfsManager.isInstalled(context)) return "error: install Alpine before running the shell"
 
         val pb = ProcessBuilder(
             bin.absolutePath,
             "--rootfs", rootfs,
+            "--loader", loader.absolutePath,
             "/bin/sh", "-c", "echo hello; uname -a; ls /",
         )
         pb.redirectErrorStream(true)

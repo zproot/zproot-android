@@ -4,4 +4,5 @@ local.properties
 *.iml
 .idea/
 app/src/main/jniLibs/*/libzproot.so
+app/src/main/jniLibs/*/libzproot-loader.so
 .kotlin/

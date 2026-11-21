@@ -13,15 +13,15 @@ The ptrace tracer is written in Zig and lives in the [zproot](https://github.com
 
 ## Status
 
-Work in progress. The APK builds, installs, and runs the tracer on a real device. Alpine downloads and extracts to the app's private storage. Path rewriting is verified end to end.
+Work in progress. M9/M10 implementation is present: Alpine installation is staged and validated in app-private storage, and the PT_INTERP loader builds for Android. End-to-end verification of the updated installer and dynamically linked guest execution on a device or emulator remains pending. Path rewriting was previously verified end to end.
 
 | Component | Status |
 |-----------|--------|
 | APK skeleton | done |
 | Foreground service | not started |
-| Alpine download and extract | done |
-| Static busybox shell | working |
-| Dynamically linked binaries (M10) | in progress |
+| Alpine download and extract (M9) | implemented; device verification pending |
+| Static BusyBox shell | present in Alpine base; temporary until zyx integration |
+| Dynamically linked binaries (M10) | implemented; device verification pending |
 | Terminal UI | not started |
 | Multi-distro registry | not started |
 | Wayland compositor | planned |
